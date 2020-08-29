@@ -2,7 +2,7 @@
 
 ⚡ My name is Nitin. I am a web developer.
 
-👯 I now help startups, businesses and entrepreneurs build their own apps. I am professional and handle everything from helping you 'spec-out' the app to performing the QA, and making sure that it's launched and hosted on a website. I am totally communicative and I have references available upon request.
+👯 I now help startups, businesses and entrepreneurs build their own apps. I am professional and handle everything from helping you 'spec-out' the app to performing the QA, and making sure that it's launched and hosted on a server. I am totally communicative and I have references available upon request.
 
 💬 Send me an email to schedule a free consultation.
 
