@@ -6,8 +6,6 @@
 
 💬 Send me an email to schedule a free consultation.
 
-📫 How to reach me: consult2020@nitinsawant.com
-
 <!--
 **nitinjs/nitinjs** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
