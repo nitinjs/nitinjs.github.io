@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript">
+        var oneUnit = 56;
+        var a = 0;
+        var b = 0;
+        var x = 0;
+        var y = 0;
+        var m = 0;
+        var n = 0;
+        var startingTime;
+        var timeSlots;
+
+        function roundTime(number, increment, offset) {
+            return Math.ceil((number - offset) / increment) * increment + offset;
+        }
+
+        function AddHours(from, to) {
+            var $container = $("#time_value_container");
+            $container.empty();
+            for (var x = from; x <= to; x++) {
+                var $time_value = $("<td></td>");
+                var $center = $("<center></center>")
+                    .css("font-family", "Calibri, sans-serif");
+                var txt = x >= 12 ? "<sup>PM</sup>" : "<sup>AM</sup>";
+                $center.html((x > 12 ? (x - 12) : x) + "&nbsp;");
+                var $sup = $("<sup></sup>");
+                $sup.css("font-weight", "normal");
+                $sup.css("vertical-align", "middle");
+                $sup.css("font-size", "x-small");
+                $sup.html(txt);
+                $sup.appendTo($center);
+                $center.css("font-weight", "bold")
+                    .css("font-size", "15px")
+                    .css("color", "#7D7D7D")
+                    .css("padding-left", "10px");
+                $time_value.append($center);
+                $time_value.appendTo($container);
+            }
+            $("#resize_container_td").attr("colspan", to - from + 1);
+        }
+
+        function ConvertTimeToPixels(fromTime, time) {
+            var fromArrTime = fromTime.split(":");
+
+            var arrTime = time.split(":");
+            var hours = parseInt(arrTime[0]) - parseInt(fromArrTime[0]);
+            var minutes = parseInt(arrTime[1]);
+            //60min = 56pixels
+            var minuteTick = (minutes * oneUnit) / 60;
+            var pixels = (hours * oneUnit) + minuteTick;
+            return pixels;
+        }
+
+        function ConvertUnitsToTime(units) {
+            var fromText = $($("#time_value_container td:first").find("center")).text();
+            var fromHours = fromText.indexOf("PM") >= 0 ? (parseInt(fromText) + 12) : parseInt(fromText);
+            if ((units + "").indexOf(".") >= 0) {
+                var arrUnits = (units + "").split(".");
+
+                var hours = parseInt(arrUnits[0]) + fromHours;
+                var minutes = "00";
+                switch (arrUnits[1]) {
+                    case "25":
+                        minutes = "15";
+                        break;
+                    case "5":
+                        minutes = "30";
+                        break;
+                    case "75":
+                        minutes = "45";
+                        break;
+                }
+                return (hours > 12 ? (hours - 12) : hours) + ":" + minutes + " " + (hours >= 12 ? "PM" : "AM");
+            } else {
+                var hours = parseInt(units) + fromHours;
+                return (hours > 12 ? (hours - 12) : hours) + ":" + "00" + " " + (hours >= 12 ? "PM" : "AM");
+            }
+        }
+
+        //12:35, 1:12
+        function AddAllowedSlot(from, to) {
+            var startingHours = $($("#time_value_container td:first").find("center")).text();
+            var $container = $(".resize_container");
+            var $allowedSlot = $("<div></div>");
+            $allowedSlot.addClass("allowedSlot");
+            var leftPixels = ConvertTimeToPixels(parseInt(startingHours) + ":00", from);
+            var fromPixels = ConvertTimeToPixels(from, from);
+            var toPixels = ConvertTimeToPixels(from, to);
+            $allowedSlot.css("left", leftPixels + "px");
+            $allowedSlot.css("width", (toPixels - fromPixels) + "px");
+            $allowedSlot.appendTo($container);
+        }
+
+        function CheckValidity(x, first) {
+            var currentUnit = $(".resize-drag").outerWidth();
+            var width = (roundTime(currentUnit, (oneUnit / 4), 0) / oneUnit) - 0.25;
+            console.log("width:" + width);
+
+            var fromLeft = (roundTime(x, (oneUnit / 4), 0) / oneUnit) - 0.25;
+            console.log("From left:" + fromLeft);
+
+            var validfromLeft = (roundTime(parseInt($(".allowedSlot").css("left").replace("px", "")), (oneUnit / 4), 0) / oneUnit) - 0.25;
+            var validWidth = roundTime($(".allowedSlot").outerWidth(), (oneUnit / 4), 0) / oneUnit;
+            console.log("valid width: " + validWidth);
+            console.log("valid left: " + validfromLeft);
+
+            if (width <= validWidth && fromLeft >= validfromLeft && (fromLeft + width) <= (validfromLeft + validWidth - 0.25)) {
+                $(".resize-drag").addClass("resizeValid");
+                $(".resize-drag").removeClass("resizeInvalid");
+            } else {
+                $(".resize-drag").addClass("resizeInvalid");
+                $(".resize-drag").removeClass("resizeValid");
+            }
+
+            var fromSelected = (ConvertUnitsToTime(fromLeft + 0.25));
+            var toSelected = (ConvertUnitsToTime(fromLeft + width + 0.25));
+            $("#time_selected").html(fromSelected + " to " + toSelected);
+            //console.log(fromSelected + " to " + toSelected);
+            if ($(".resize-drag").outerWidth() <= 143) {
+                $("#time_selected").hide();
+            } else {
+                $("#time_selected").show();
+            }
+
+            OnChange(fromSelected, toSelected, first);
+        }
+
+        function ShowTimeRangePicker(elm) {
+            var div = document.querySelector('#time_strip_table');
+            var inp = document.querySelector('#action_qty');
+            var rect = inp.getClientRects();
+            div.style.display = 'block';
+            div.style.left = rect[0].left + 'px';
+            div.style.top = rect[0].bottom + 'px';
+
+            $("#time_strip_table").fadeIn();
+        }
+
+        function OnChange(from, to, first) {
+            $("#action_qty").val(from + " to " + to);
+            if (!first)
+                onTimeslotChanged({ from: from, to: to, isValid: $(".resize-drag").hasClass("resizeValid") });
+        }
+
+        function HideTimeRangePicker(elm) {
+            $("#time_strip_table").fadeOut().promise().done(function () {
+                $("#time_strip_table").css("transform", "");
+            });
+        }
+
+        function dragMoveListener(event) {
+            var target = event.target;
+            // keep the dragged position in the data-x/data-y attributes
+            m = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            n = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            // translate the element
+            target.style.webkitTransform =
+                target.style.transform =
+                'translate(' + m + 'px, ' + n + 'px)';
+
+            // update the posiion attributes
+            target.setAttribute('data-x', m);
+            target.setAttribute('data-y', n);
+        }
+
+        $(document).ready(function () {
+            startingTime = JSON.parse($("#action_qty").attr("starting-time"));
+            timeSlots = JSON.parse($("#action_qty").attr("time-slots"));
+
+            AddHours(startingTime.from, startingTime.to);
+            for (var x = 0; x < timeSlots.length; x++) {
+                var allowedSlot = timeSlots[x];
+                AddAllowedSlot(allowedSlot.from, allowedSlot.to);
+            }
+
+            interact('.resize-drag')
+                .draggable({
+                    snap: {
+                        targets: [
+                            interact.createSnapGrid({ x: 15, y: 1 })
+                        ],
+                        range: Infinity,
+                        relativePoints: [{ x: 0, y: 0 }]
+                    },
+                    restrict: {
+                        restriction: 'parent',
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+                        endOnly: true
+                    },
+                })
+                .resizable({
+                    // resize from all edges and corners
+                    edges: { left: true, right: true, bottom: false, top: false },
+                    snap: {
+                        targets: [
+                            interact.createSnapGrid({ x: 15, y: 1 })
+                        ],
+                        relativePoints: [{ x: 0, y: 0 }]
+                    },
+                    snapSize: {
+                        targets: [
+                            { width: oneUnit, height: 40, range: 1 },
+                        ]
+                    },
+
+                    // keep the edges inside the parent
+                    restrictEdges: {
+                        outer: 'parent',
+                        endOnly: true,
+                    },
+
+                    // minimum size
+                    restrictSize: {
+                        min: { width: 25, height: 40 },
+                    },
+
+                    inertia: true,
+                })
+                .on('resizemove', function (event) {
+                    console.log("in resizemove");
+                    var target = event.target;
+                    x = (parseFloat(target.getAttribute('data-x')) || 0);
+                    y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                    // update the element's style
+                    target.style.width = event.rect.width + 'px';
+                    target.style.height = event.rect.height + 'px';
+
+                    // translate when resizing from top or left edges
+                    x += event.deltaRect.left;
+                    y += event.deltaRect.top;
+
+                    target.style.webkitTransform = target.style.transform =
+                        'translate(' + x + 'px,' + y + 'px)';
+
+                    target.setAttribute('data-x', x);
+                    target.setAttribute('data-y', y);
+                    //target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
+
+                    CheckValidity(x);
+                })
+                .on('dragmove', function (event) {
+                    var target = event.target;
+                    // keep the dragged position in the data-x/data-y attributes
+                    a = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                    b = (parseFloat(target.getAttribute('data-y')) || 0);// + event.dy;
+
+                    // translate the element
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'translate(' + a + 'px, ' + b + 'px)';
+
+                    // update the posiion attributes
+                    target.setAttribute('data-x', a);
+                    target.setAttribute('data-y', b);
+
+                    CheckValidity(a);
+                });
+
+
+            // target elements with the "draggable" class
+            interact('#time_strip_table')
+                .draggable({
+                    autoScroll: true,
+                    onmove: dragMoveListener,
+                });
+
+            // this is used later in the resizing and gesture demos
+            window.dragMoveListener = dragMoveListener;
+
+            $(".resize-drag").on("dblclick", function () {
+                HideTimeRangePicker(this);
+            });
+
+            CheckValidity(0, true);
+            //var logText = 'the element "' + eName + '" ';
+            //angular.element(element).on("click mousedown mouseup focus blur keydown change", function (e) {
+            //    console.log(new Date().toLocaleTimeString()+': "' + e.type + '"' + " event occurred for " + logText);
+            //});
+        });
+
+        function onTimeslotChanged (data) {
+            try {
+                console.log("From:" + data.from + " to " + data.to + ", IsValid:" + data.isValid);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    </script>
+    <link href="Styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="parent">
+        <input type="text" starting-time='{"from": 8, "to": 23}' time-slots='[{"from": "12:00", "to": "23:00"}]' id="action_qty" onfocus="ShowTimeRangePicker(this)" />
+        <table id="time_strip_table" class="time_strip_table" border="0" cellpadding="0" cellspacing="0" style="display:none">
+            <tr class="border_bottom not-selectable" id="time_value_container">
+                <td class="time_value">
+                    <center style="font-weight:bold;font-size:15px;color:#7D7D7D;padding-left:10px">
+                        9
+                    </center>
+                </td>
+                <td class="time_value">
+                    10am
+                </td>
+                <td class="time_value">
+                    11am
+                </td>
+                <td class="time_value">
+                    12pm
+                </td>
+                <td class="time_value">
+                    1pm
+                </td>
+                <td class="time_value">
+                    2pm
+                </td>
+                <td class="time_value">
+                    3pm
+                </td>
+                <td class="time_value">
+                    4pm
+                </td>
+                <td class="time_value">
+                    5pm
+                </td>
+                <td class="time_value">
+                    6pm
+                </td>
+                <td class="time_value">
+                    7pm
+                </td>
+                <td class="time_value">
+                    8pm
+                </td>
+                <td class="time_value">
+                    9pm
+                </td>
+            </tr>
+            <tr>
+                <td colspan="13" style="padding-left:25px;padding-right:25px;background-color:#F1F1F1">
+                    <div class="resize_container">
+                        <div class="resize-drag resizeValid">
+                            <i class="fa fa-caret-left" style="float:left;padding-left:5px;font-size: 20px;"></i>
+                            <center class="not-selectable" id="time_selected" style="display: inline-block;margin-top: 10px;font-family: calibri;font-size: 13px;"></center>
+                            <i class="fa fa-caret-right" style="float:right;padding-right:5px;font-size: 20px;"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
