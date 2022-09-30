@@ -11,41 +11,6 @@
     </style>
     <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <meta http-equiv="refresh" content="2;url=https://blog.nitinsawant.com">
-    <script type="text/javascript">
-        //Calls countdown function
-var count = 8;
-
-//counts to 3,2, 1 and redirect
-function countdown(timer) {
-    //Keeps the interval ID for later clear
-    var intervalID;
-    intervalID = setInterval(function () {
-
-        display(timer);
-        timer = timer - 1;
-
-        if (timer < 0) {
-            //Clears the timeout 
-            clearTimeout(intervalID);
-            window.location.replace('https://blog.nitinsawant.com');
-        }
-    }, 1000);
-
-
-}
-
-//Modifies the countdown display
-function display(timer) {
-    document.getElementById("number").innerHTML = "Redirecting in "+timer;
-}
-
-        $(document).ready(function(){
-countdown(count);
-        });
-        
-
-    </script>
 </head>
 <body class="markdown-body">
     <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="light" data-type="HORIZONTAL" data-vanity="nitinjs" data-version="v1"></div>
@@ -58,7 +23,5 @@ countdown(count);
     <br />
     <a href="https://blog.nitinsawant.com/" style="font-size: 20px;">Nitin's blog</a><br/>
     <br/>          
-    <div class="nice">
-    <p id="number"></p> </div>
 </body>
 </html>
