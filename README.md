@@ -1,10 +1,10 @@
 ### Hi there 👋
 
-⚡ My name is Nitin. I am a web developer.
+⚡ My name is [Nitin](https://www.linkedin.com/in/nitinjs/). I am a web developer.
 
-👯 I now help startups, businesses and entrepreneurs build their own apps. I am professional and handle everything from helping you 'spec-out' the app to performing the QA, and making sure that it's launched and hosted on a server. I am totally communicative and I have references available upon request.
+👯 I now work with startups, SME businesses and entrepreneurs build their own apps. I am professional and handle everything from 'spec-out' the app to performing the QA, and making sure that it's launched and hosted on a website. I am totally communicative and I have references available upon request.
 
-💬 [Send](mailto:nitin@nitinsawant.com) me an email or connect on [Skype](https://join.skype.com/vf00tYHEXShb) to schedule a free consultation.
+💬 [Send](mailto:nitin@nitinsawant.com) me an email or connect on [Skype](https://join.skype.com/vf00tYHEXShb) to schedule a free consultation or you want to know how to contact yourself in the future 😜.
 
 <!--
 **nitinjs/nitinjs** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
