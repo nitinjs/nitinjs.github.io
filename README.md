@@ -11,6 +11,8 @@
 😄 Fun fact: To see the world, things dangerous to come to, to see behind walls, to draw closer, to find each other and feel. That is the Purpose of LIFE.
 
 > Just another line of open source code: https://github.com/nitinjs?tab=repositories
+> blog: https://blog.nitinsawant.com
+> linkedin: http://www.linkedin.com/in/nitinjs
 <!--
 **nitinjs/nitinjs** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
