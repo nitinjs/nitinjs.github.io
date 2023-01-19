@@ -1,6 +1,6 @@
-### Hi there 👋
+## Hi there 👋
 
-## ✨ My name is [Nitin](https://www.linkedin.com/in/nitinjs/). I am a web developer.
+### ✨ My name is [Nitin Sawant](https://www.linkedin.com/in/nitinjs/). I am a web developer.
 
 🌱 I'm currently working with startups, SME businesses and entrepreneurs build their own apps. I am professional and handle everything from 'spec-out' the app to performing the QA, and making sure that it's launched and hosted on a website. I am totally communicative and I have references available upon request.
 
