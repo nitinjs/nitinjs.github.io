@@ -86,14 +86,14 @@ $(document).ready(function () {
     players = plyr.setup(".js-player", {
         hideControls: true,
         settings: [],
-        autoplay: true,
+        autoplay: false,
         controls: []
     });
 
     players[0].on("ready", function (event) {
         //$(".plyr-playlist .pls-playing").find("a").one().trigger("click");
         console.log("Ready.....................................................");
-        players[0].play();
+        //players[0].play();
 
 
         if (addbuttons) {
@@ -309,7 +309,7 @@ function loadPlaylist(target, apikey, limit = 20, myPlaylist) {
 
         //ScrollTo($(".pls-playing").attr("href"), 500,0,10);
 
-        //$(".plyr-playlist").scrollTo(".pls-playing", 300);
+        $(".plyr-playlist").scrollTo(".pls-playing", 300);
 
         // players[0].on("ended", function(event) {
         //   console.log("test");
