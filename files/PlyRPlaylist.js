@@ -15,6 +15,23 @@ var addbuttons = true;
 var players = [];
 
 
+
+/****** GC ScrollTo **********/
+// mine: https://jsfiddle.net/onigetoc/5kh0e5f4/
+// https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
+jQuery.fn.scrollTo = function (elem, speed, margin) {
+    jQuery(this).animate(
+        {
+            scrollTop:
+                jQuery(this).scrollTop() -
+                jQuery(this).offset().top +
+                jQuery(elem).offset().top
+        },
+        speed == undefined ? 1000 : speed
+    );
+    return this;
+};
+
 function shorten_nicely_with_ellipsis() {
     var str = arguments[1];
     var truncating = !!arguments[2];
@@ -352,19 +369,3 @@ function loadPlaylist(target, apikey, limit = 20, myPlaylist) {
         return new_Data;
     }
 }
-
-/****** GC ScrollTo **********/
-// mine: https://jsfiddle.net/onigetoc/5kh0e5f4/
-// https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
-jQuery.fn.scrollTo = function (elem, speed, margin) {
-    jQuery(this).animate(
-        {
-            scrollTop:
-                jQuery(this).scrollTop() -
-                jQuery(this).offset().top +
-                jQuery(elem).offset().top
-        },
-        speed == undefined ? 1000 : speed
-    );
-    return this;
-};
