@@ -80,7 +80,7 @@ var myPlaylist = [];
 var apikey = "AIzaSyAjzcz852C9z8p1N8QMBytPRFQpiwmU4Jo"; // GET YOUR YOUTUBE API KEY
 //var apikey = ""; // ONLY FOR MY CUSTOM PLAYLIST NO NEED FOR YOUTUBE API KEY
 var target = ".js-player";
-var limit = 30;
+var limit = 71;
 
 $(document).ready(function () {
     players = plyr.setup(".js-player", {
