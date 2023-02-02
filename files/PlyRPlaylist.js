@@ -93,7 +93,7 @@ $(document).ready(function () {
     players[0].on("ready", function (event) {
         //$(".plyr-playlist .pls-playing").find("a").one().trigger("click");
         console.log("Ready.....................................................");
-        //players[0].play();
+        players[0].play();
 
 
         if (addbuttons) {
