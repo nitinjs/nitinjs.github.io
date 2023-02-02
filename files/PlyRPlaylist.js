@@ -309,7 +309,7 @@ function loadPlaylist(target, apikey, limit = 20, myPlaylist) {
 
         //ScrollTo($(".pls-playing").attr("href"), 500,0,10);
 
-        $(".plyr-playlist").scrollTo(".pls-playing", 300);
+        //$(".plyr-playlist").scrollTo(".pls-playing", 300);
 
         // players[0].on("ended", function(event) {
         //   console.log("test");
