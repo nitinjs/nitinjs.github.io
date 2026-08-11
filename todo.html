@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        Daily planner
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body style="background-color:steelblue">
+    <div class="container my-4">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>वेळ</th>
+                    <th>Activity</th>
+                    <th>Hrs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-start="420" data-end="425">
+                    <td><strong>7:00</strong></td>
+                    <td>Wake up</td>
+                    <td></td>
+                </tr>
+                <tr data-start="420" data-end="485">
+                    <td>7:00–8:05</td>
+                    <td>Shreyas school</td>
+                    <td></td>
+                </tr>
+                <tr data-start="485" data-end="545">
+                    <td><strong>8:05–9:05</strong></td>
+                    <td>⭐ Interview preparation</td>
+                    <td>1hr</td>
+                </tr>
+                <tr data-start="555" data-end="585">
+                    <td>9:15–9:45</td>
+                    <td>Tejas school</td>
+                    <td></td>
+                </tr>
+                <tr data-start="585" data-end="705">
+                    <td><strong>9:45–11:45</strong></td>
+                    <td>⭐ Interview preparation</td>
+                    <td>2hrs</td>
+                </tr>
+                <tr data-start="705" data-end="750">
+                    <td>11:45–12:30</td>
+                    <td>Bath + breakfast</td>
+                    <td></td>
+                </tr>
+                <tr data-start="750" data-end="810">
+                    <td><strong>12:30–1:30</strong></td>
+                    <td>⭐ Interview preparation</td>
+                    <td>1hr</td>
+                </tr>
+                <tr data-start="810" data-end="855">
+                    <td>1:30–2:15</td>
+                    <td>📺 TV + Shreyas pickup</td>
+                    <td></td>
+                </tr>
+                <tr data-start="855" data-end="870">
+                    <td>2:15–2:30</td>
+                    <td>Lunch</td>
+                    <td></td>
+                </tr>
+                <tr data-start="870" data-end="930">
+                    <td>2:30–3:30</td>
+                    <td>😴 Controlled nap + alarm</td>
+                    <td></td>
+                </tr>
+                <tr data-start="930" data-end="1110">
+                    <td><strong>3:30–6:30</strong></td>
+                    <td>⭐ Interview preparation</td>
+                    <td>3hrs</td>
+                </tr>
+                <tr data-start="1110" data-end="1140">
+                    <td>6:30–7:00</td>
+                    <td>🚶 Walk in garden</td>
+                    <td></td>
+                </tr>
+                <tr data-start="1140" data-end="1170">
+                    <td>7:00–7:30</td>
+                    <td>Applications / recruiter calls / resume / LinkedIn</td>
+                    <td></td>
+                </tr>
+                <tr data-start="1170" data-end="1290">
+                    <td><strong>7:30–9:30</strong></td>
+                    <td>⭐ Interview preparation (revision)</td>
+                    <td>2hrs</td>
+                </tr>
+                <tr data-start="1290" data-end="1320">
+                    <td>9:30 onward</td>
+                    <td>📺 TV + dinner</td>
+                    <td></td>
+                </tr>
+                <tr data-start="1320" data-end="1350">
+                    <td><strong>~10:00–10:30</strong></td>
+                    <td>😴 Sleep</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            function highlightCurrent() {
+                var now = new Date();
+                var mins = now.getHours() * 60 + now.getMinutes();
+                $('tbody tr').removeClass('table-info');
+                $('tbody tr').each(function () {
+                    var start = parseInt($(this).data('start'), 10);
+                    var end = parseInt($(this).data('end'), 10);
+                    if (!isNaN(start) && !isNaN(end) && mins >= start && mins < end) {
+                        $(this).addClass('table-info');
+                    }
+                });
+            }
+            highlightCurrent();
+            setInterval(highlightCurrent, 60000);
+        });
+    </script>
+</body>
+</html>
